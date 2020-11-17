@@ -5,7 +5,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 ## Backlog
 
 - [x] chore: initalize git repository
-- [ ] feat: the window construct
+- [x] feat: the window construct
 - [ ] feat: the menu bar construct
 - [ ] feat: the status bar construct
 - [ ] feat: draw a grid of button
