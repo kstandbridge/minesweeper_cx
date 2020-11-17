@@ -9,7 +9,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [x] feat: the menu bar construct
 - [x] feat: the status bar construct
 - [x] feat: draw a grid of button
-- [ ] feat: size/position buttons on window resize
+- [x] feat: size/position buttons on window resize
 - [ ] feat: debug menu to show location of randomly placed mines
 - [ ] feat: add game over when mine clicked
 - [ ] feat: show remaining mines on game over
@@ -23,6 +23,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [ ] feat: add icons on tiles for different states
 
 ## Bugs
-- [ ] fix: status bar position on resize
+- [x] fix: status bar position on resize
 
 ## Tech Debt
+- [ ] tech: error handling

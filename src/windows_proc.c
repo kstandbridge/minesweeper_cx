@@ -6,6 +6,8 @@
 #include "resource.h"
 
 const int ID_BUTTON = 9000;
+int g_gridColumns = 10;
+int g_gridRows = 15;
 
 void MainWindow_OnClose(HWND hwnd)
 {
@@ -33,7 +35,7 @@ void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
     }
 }
 
-BOOL MainWindow_InitalizeGrid(HWND hwnd, int cols, int rows)
+BOOL MainWindow_InitalizeGrid(HWND hwnd)
 {
     RECT rect;
     if(!GetClientRect(hwnd, &rect))
@@ -51,10 +53,10 @@ BOOL MainWindow_InitalizeGrid(HWND hwnd, int cols, int rows)
         return FALSE;
     }
     
-    for(int x = 0; x < cols; x++)
-        for(int y = 0; y < rows; y++)
+    for(int x = 0; x < g_gridColumns; x++)
+        for(int y = 0; y < g_gridRows; y++)
     {
-        int button_id = ID_BUTTON + (y * cols  + x);
+        int button_id = ID_BUTTON + (y * g_gridColumns  + x);
         
         HWND button_hwnd = CreateWindow(L"BUTTON", L"", 
                                         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
@@ -90,7 +92,7 @@ BOOL MainWindow_OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
     SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)L"left text here");
     SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)L"right text here");
     
-    BOOL result = MainWindow_InitalizeGrid(hwnd, 10, 15);
+    BOOL result = MainWindow_InitalizeGrid(hwnd);
     if(!result)
     {
         MessageBox(hwnd, L"Failed to initalize grid!", L"Error", MB_OK | MB_ICONERROR);
@@ -102,14 +104,44 @@ BOOL MainWindow_OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
 
 void MainWindow_OnSize(HWND hwnd, UINT state, int cx, int cy)
 {
+    int window_width = cx;
+    int window_height = cy;
+    
     HWND hStatus = GetDlgItem(hwnd, IDC_STATUS);
-    if(hStatus == NULL)
+    RECT rcStatus;
+    SendMessage(hStatus, WM_SIZE, 0, 0);
+    if(!GetWindowRect(hStatus, &rcStatus))
     {
         MessageBox(hwnd, L"Failed to get status bar Rect!", L"Error", MB_OK | MB_ICONERROR);
         return;
     }
     
-    SendMessage(hStatus, WM_SIZE, 0, 0);
+    int status_height = rcStatus.bottom - rcStatus.top;
+    window_height = window_height - status_height;
+    
+    int offset_left = window_width % g_gridColumns / 2;
+    int offset_top = window_height % g_gridRows / 2;
+    
+    for(int x = 0; x < g_gridColumns; x++)
+        for(int y = 0; y < g_gridRows; y++)
+    {
+        int button_id = ID_BUTTON + (y * g_gridColumns + x);
+        
+        int button_width = window_width / g_gridColumns;
+        int button_height = window_height / g_gridRows;
+        int button_left = (window_width / g_gridColumns * x) + offset_left;
+        int button_top = (window_height / g_gridRows * y) + offset_top;
+        
+        HWND button_hwnd = GetDlgItem(hwnd, button_id);
+        
+        if(button_hwnd == NULL)
+        {
+            MessageBox(hwnd, L"Failed to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+            return;
+        }
+        
+        MoveWindow(button_hwnd, button_left, button_top, button_width, button_height, FALSE);
+    }
     InvalidateRect(hwnd, NULL, TRUE);
     UpdateWindow(hwnd);
 }
