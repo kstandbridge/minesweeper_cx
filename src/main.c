@@ -1,6 +1,8 @@
 #include <windows.h>
 
+#include "resource.h"
 #include "windows_proc.h"
+
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
@@ -13,6 +15,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     wc.hInstance     = hInstance;
     wc.lpszClassName = CLASS_NAME;
     wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wc.lpszMenuName  = MAKEINTRESOURCE(IDR_MENU);
     
     RegisterClass(&wc);
     
@@ -21,7 +24,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     HWND hwnd = CreateWindowEx(
                                0,                    // Optional window styles.
                                CLASS_NAME,           // Window class
-                               L"Minesweeper",    // Window text
+                               L"Minesweeper",       // Window text
                                WS_OVERLAPPEDWINDOW,  // Window style
                                
                                // Size and position
