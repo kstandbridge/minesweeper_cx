@@ -8,4 +8,8 @@ IDR_MENU MENU
 	{
 		MENUITEM "E&xit", IDM_FILE_EXIT
 	}
+	POPUP "&Debug"
+	{
+		MENUITEM "Show &Mines", IDM_DEBUG_SHOW_MINES
+	}
 }

@@ -10,7 +10,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [x] feat: the status bar construct
 - [x] feat: draw a grid of button
 - [x] feat: size/position buttons on window resize
-- [ ] feat: debug menu to show location of randomly placed mines
+- [x] feat: debug menu to show location of placed mines
 - [ ] feat: add game over when mine clicked
 - [ ] feat: show remaining mines on game over
 - [ ] feat: show count of surrounding mines on click

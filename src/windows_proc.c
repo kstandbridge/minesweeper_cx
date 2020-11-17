@@ -4,10 +4,9 @@
 #include <CommCtrl.h>
 
 #include "resource.h"
+#include "game.h"
 
 const int ID_BUTTON = 9000;
-int g_gridColumns = 10;
-int g_gridRows = 15;
 
 void MainWindow_OnClose(HWND hwnd)
 {
@@ -16,12 +15,78 @@ void MainWindow_OnClose(HWND hwnd)
 
 void MainWindow_OnDestroy(HWND hwnd)
 {
+    CleanUp();
     PostQuitMessage(0);
 }
 
 void MainWindow_OnCommand_Exit(HWND hwnd)
 {
     PostQuitMessage(0);
+}
+
+void MainWindow_ToggleShowMines(HWND hwnd, BOOL show_mines)
+{
+    for(int x = 0; x < g_gridColumns; x++)
+        for(int y = 0; y < g_gridRows; y++)
+    {
+        int button_id = ID_BUTTON + (y * g_gridColumns  + x);
+        HWND button_hwnd = GetDlgItem(hwnd, button_id);
+        if(button_hwnd == NULL)
+        {
+            MessageBox(hwnd, L"Failed to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+            return;
+        }
+        TILE_STATE state = GetTileState(x, y);
+        switch(state)
+        {
+            case MINE:
+            {
+                if(show_mines)
+                {
+                    Button_SetText(button_hwnd, L"B");
+                }
+                else
+                {
+                    Button_SetText(button_hwnd, L"");
+                }
+            } break;
+            default:
+            {
+                Button_SetText(button_hwnd, L"");
+            } break;
+        }
+    }
+}
+
+void MainWindow_OnCommand_ShowMines(HWND hwnd)
+{
+    HMENU hMenu = GetMenu(hwnd);
+    if(hMenu == NULL)
+    {
+        MessageBox(hwnd, L"Unable to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+        return;
+    }
+    DWORD res = GetMenuState(hMenu, IDM_DEBUG_SHOW_MINES, MF_BYCOMMAND);
+    if(res == MF_CHECKED)
+    {
+        res = CheckMenuItem(hMenu, IDM_DEBUG_SHOW_MINES, MF_BYCOMMAND | MF_UNCHECKED);
+        if(res == -1)
+        {
+            MessageBox(hwnd, L"Failed to check menu item", L"Error", MB_OK | MB_ICONERROR);
+            return;
+        }
+        MainWindow_ToggleShowMines(hwnd, FALSE);
+    }
+    else
+    {
+        res = CheckMenuItem(hMenu, IDM_DEBUG_SHOW_MINES, MF_BYCOMMAND | MF_CHECKED);
+        if(res == -1)
+        {
+            MessageBox(hwnd, L"Failed to check menu item", L"Error", MB_OK | MB_ICONERROR);
+            return;
+        }
+        MainWindow_ToggleShowMines(hwnd, TRUE);
+    }
 }
 
 void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
@@ -31,6 +96,10 @@ void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         case IDM_FILE_EXIT:
         {
             MainWindow_OnCommand_Exit(hwnd);
+        } break;
+        case IDM_DEBUG_SHOW_MINES:
+        {
+            MainWindow_OnCommand_ShowMines(hwnd);
         } break;
     }
 }
@@ -69,6 +138,8 @@ BOOL MainWindow_InitalizeGrid(HWND hwnd)
             return FALSE;
         }
     }
+    
+    InitGame(10, 15, 10);
     
     return TRUE;
 }
