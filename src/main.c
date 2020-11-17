@@ -14,6 +14,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     wc.lpfnWndProc   = WindowProc;
     wc.hInstance     = hInstance;
     wc.lpszClassName = CLASS_NAME;
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
     wc.lpszMenuName  = MAKEINTRESOURCE(IDR_MENU);
     

@@ -5,3 +5,5 @@
 
 #define IDR_MENU      1000
 #define IDM_FILE_EXIT 1001
+
+#define IDC_STATUS    1100
