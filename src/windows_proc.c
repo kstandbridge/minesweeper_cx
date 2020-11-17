@@ -100,6 +100,20 @@ BOOL MainWindow_OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
     return TRUE;
 }
 
+void MainWindow_OnSize(HWND hwnd, UINT state, int cx, int cy)
+{
+    HWND hStatus = GetDlgItem(hwnd, IDC_STATUS);
+    if(hStatus == NULL)
+    {
+        MessageBox(hwnd, L"Failed to get status bar Rect!", L"Error", MB_OK | MB_ICONERROR);
+        return;
+    }
+    
+    SendMessage(hStatus, WM_SIZE, 0, 0);
+    InvalidateRect(hwnd, NULL, TRUE);
+    UpdateWindow(hwnd);
+}
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch(uMsg)
@@ -108,6 +122,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         HANDLE_MSG(hwnd, WM_DESTROY, MainWindow_OnDestroy);
         HANDLE_MSG(hwnd, WM_COMMAND, MainWindow_OnCommand);
         HANDLE_MSG(hwnd, WM_CREATE, MainWindow_OnCreate);
+        HANDLE_MSG(hwnd, WM_SIZE, MainWindow_OnSize);
     }
     
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
