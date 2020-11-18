@@ -3,6 +3,7 @@
 #include <windowsx.h>
 #include <CommCtrl.h>
 #include <time.h>
+#include <stdio.h>
 
 #include "resource.h"
 #include "game.h"
@@ -55,9 +56,16 @@ void MainWindow_ToggleShowMines(HWND hwnd, BOOL show_mines)
             {
                 Button_SetText(button_hwnd, L"E");
             } break;
-            default:
+            case CLEAR:
             {
                 Button_SetText(button_hwnd, L"");
+            } break;
+            default:
+            {
+                wchar_t buf[255];
+                swprintf_s(buf, sizeof(buf), L"%d", state);
+                
+                Button_SetText(button_hwnd, buf);
             } break;
         }
     }
@@ -122,6 +130,19 @@ void MainWindow_OnCommand_CheckMine(HWND hwnd, HWND hwndCtl, int id)
             Button_Enable(hButton, FALSE);
         }
         MessageBox(hwnd, L"Game Over!!!", L"BOOM!!!", MB_OK | MB_ICONWARNING);
+    }
+    else if(tileState == CLEAR)
+    {
+        Button_Enable(hwndCtl, FALSE);
+    }
+    else
+    {
+        HWND hButton = GetDlgItem(hwnd, id);
+        wchar_t buf[255];
+        swprintf_s(buf, sizeof(buf), L"%d", tileState);
+        
+        Button_SetText(hwndCtl, buf);
+        Button_Enable(hwndCtl, FALSE);
     }
 }
 

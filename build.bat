@@ -10,13 +10,12 @@ rc -nologo ..\src\resource.rc
 set warnings_to_ignore=-wd4201 -wd4204 -wd4255 -wd4668 -wd4820 -wd4100 -wd4189 -wd4711 -wd4710 -wd4101 -wd4296 -wd4311 -wd4115 -wd4702 -wd4456 -wd4555 -wd5045
 
 REM Debug
-REM cl -nologo -MD -Zi -FC -WX -W4 %warnings_to_ignore% ..\src\*.c ..\src\resource.res /DUNICODE /D_UNICODE /link user32.lib gdi32.lib comctl32.lib /out:minesweeper_cx.exe 
+cl -nologo -MD -Zi -FC -WX -W4 %warnings_to_ignore% ..\src\*.c ..\src\resource.res /DUNICODE /D_UNICODE /link user32.lib gdi32.lib comctl32.lib /out:minesweeper_cx.exe 
 
 REM Prod
-cl -nologo -O2 -MD ..\src\*.c ..\src\resource.res /DUNICODE /D_UNICODE /link user32.lib gdi32.lib comctl32.lib /out:minesweeper_cx.exe
+REM cl -nologo -O2 -MD ..\src\*.c ..\src\resource.res /DUNICODE /D_UNICODE /link user32.lib gdi32.lib comctl32.lib /out:minesweeper_cx.exe
 
 del *.obj
-del *.manifest
 del lock.tmp
 del ..\src\resource.res
 

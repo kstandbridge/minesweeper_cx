@@ -52,7 +52,37 @@ TILE_STATE CheckTileState(int x, int y)
         g_tiles[y * g_gridColumns + x] = EXPLODE;
         return EXPLODE;
     }
-    return CLEAR;
+    
+    int mines = 0;
+    for(int i = -1; i < 2; i++)
+    {
+        for(int j = -1; j < 2; j++)
+        {
+            if(x + i >= 0 && x + i < g_gridColumns && y + j >= 0 && y + j < g_gridRows)
+            {
+                if(g_tiles[(y + j) * g_gridColumns + (x + i)] == MINE)
+                {
+                    mines++;
+                }
+            }
+        }
+    }
+    if(mines == 0)
+    {
+        g_tiles[y * g_gridColumns + x] = CLEAR;
+        return CLEAR;
+    }
+    if(mines > 0 && mines < 10)
+    {
+        g_tiles[y * g_gridColumns + x] = mines;
+        return mines;
+    }
+    else
+    {
+        MessageBox(NULL, L"Strange we hit this", L"Error", MB_OK);
+    }
+    
+    return UNCHECKED;
 }
 
 TILE_STATE GetTileState(int x, int y)
