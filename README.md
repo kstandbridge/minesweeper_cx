@@ -15,7 +15,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [x] feat: add new game button
 - [x] feat: show count of surrounding mines on click
 - [x] feat: auto click surrounding tile if no mines
-- [ ] feat: add game win when all mines found
+- [x] feat: add game win when all mines found
 - [ ] feat: add timer when game starts
 - [ ] feat: allow right click to flag tile as mine
 - [ ] feat: indicate success/fail on flagged tiles

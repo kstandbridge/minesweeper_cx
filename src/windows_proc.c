@@ -167,6 +167,40 @@ void MainWindow_OnCommand_CheckMine(HWND hwnd, HWND hwndCtl, int id)
         Button_SetText(hwndCtl, buf);
         Button_Enable(hwndCtl, FALSE);
     }
+    
+    wchar_t buf[255];
+    HWND hStatus = GetDlgItem(hwnd, IDC_STATUS);
+    if(hStatus == NULL)
+    {
+        MessageBox(hwnd, L"Unable to get status bar handle!", L"Error", MB_OK | MB_ICONERROR);
+        return;
+    }
+    if(g_tilesToCheck == 0)
+    {
+        MainWindow_ToggleShowMines(hwnd, TRUE);
+        for(int x = 0; x < g_gridColumns; x++)
+            for(int y = 0; y < g_gridRows; y++)
+        {
+            int button_id = ID_BUTTON + (y * g_gridColumns + x);
+            
+            HWND hButton = GetDlgItem(hwnd, button_id);
+            if(hButton == NULL)
+            {
+                MessageBox(hwnd, L"Unable to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+                return;
+            }
+            
+            Button_Enable(hButton, FALSE);
+        }
+        SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)L"Winner!!!");
+        MessageBox(hwnd, L"Winner!!!", L"Success!!!", MB_OK | MB_ICONINFORMATION);
+    }
+    else
+    {
+        swprintf_s(buf, sizeof(buf), L"Tiles to check: %d", g_tilesToCheck);
+        SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)&buf);
+    }
+    
 }
 
 // Forward declaration
@@ -267,6 +301,15 @@ BOOL MainWindow_InitalizeGrid(HWND hwnd)
     }
     
     InitGame(10, 15, 10);
+    
+    wchar_t buf[255];
+    HWND hStatus = GetDlgItem(hwnd, IDC_STATUS);
+    if(hStatus == NULL)
+    {
+        MessageBox(hwnd, L"Unable to get status bar handle!", L"Error", MB_OK | MB_ICONERROR);
+        return FALSE;
+    }
+    SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)L"Good Luck!");
     
     return TRUE;
 }

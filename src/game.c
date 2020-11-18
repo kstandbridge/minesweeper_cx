@@ -2,6 +2,10 @@
 
 #include <windows.h>
 
+int g_gridColumns = 10;
+int g_gridRows = 15;
+int g_numMines = 10;
+int g_tilesToCheck = 0;
 int* g_tiles;
 
 void InitMines(int x, int y)
@@ -28,6 +32,7 @@ void InitGame()
     g_tiles = GlobalAlloc(GPTR, sizeof(int) * g_gridRows * g_gridColumns);
     
     InitMines(0, 0);
+    g_tilesToCheck = g_gridColumns * g_gridRows - g_numMines;
 }
 
 void CleanUp()
@@ -45,6 +50,8 @@ TILE_STATE CheckTileState(int x, int y)
         MessageBox(NULL, L"Board not initalized!", L"Error", MB_OK | MB_ICONERROR);
         return UNCHECKED;
     }
+    
+    g_tilesToCheck--;
     
     TILE_STATE result = g_tiles[y * g_gridColumns + x];
     if(result == MINE)

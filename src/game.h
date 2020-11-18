@@ -1,3 +1,8 @@
+extern int g_gridColumns;
+extern int g_gridRows;
+extern int g_numMines;
+extern int g_tilesToCheck;
+
 typedef enum
 {
     UNCHECKED = -1,
@@ -19,10 +24,6 @@ typedef enum
     FLAGGED_CORRECT = 12,
     FLAGGED_INCORRECT = 13
 } TILE_STATE;
-
-static int g_gridColumns = 10;
-static int g_gridRows = 15;
-static int g_numMines = 10;
 
 void InitGame();
 void CleanUp();
