@@ -24,7 +24,7 @@ static int g_gridColumns = 10;
 static int g_gridRows = 15;
 static int g_numMines = 10;
 
-void InitGame(int cols, int rows, int mines);
+void InitGame();
 void CleanUp();
 
 TILE_STATE CheckTileState(int x, int y);

@@ -114,6 +114,11 @@ void MainWindow_OnCommand_CheckMine(HWND hwnd, int id)
             int button_id = ID_BUTTON + (y * g_gridColumns + x);
             
             HWND hButton = GetDlgItem(hwnd, button_id);
+            if(hButton == NULL)
+            {
+                MessageBox(hwnd, L"Unable to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+                return;
+            }
             
             Button_Enable(hButton, FALSE);
         }
@@ -121,11 +126,54 @@ void MainWindow_OnCommand_CheckMine(HWND hwnd, int id)
     }
 }
 
+// Forward declaration
+BOOL MainWindow_InitalizeGrid(HWND hwnd);
+
+void MainWindow_OnCommand_New(HWND hwnd)
+{
+    for(int x = 0; x < g_gridColumns; x++)
+        for(int y = 0; y < g_gridRows; y++)
+    {
+        int button_id = ID_BUTTON + (y * g_gridColumns + x);
+        
+        HWND hButton = GetDlgItem(hwnd, button_id);
+        if(hButton == NULL)
+        {
+            MessageBox(hwnd, L"Unable to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+            return;
+        }
+        if(!DestroyWindow(hButton))
+        {
+            MessageBox(hwnd, L"Unable to destory button!", L"Error", MB_OK | MB_ICONERROR);
+            return;
+        }
+    }
+    HMENU hMenu = GetMenu(hwnd);
+    if(hMenu == NULL)
+    {
+        MessageBox(hwnd, L"Unable to get button handle!", L"Error", MB_OK | MB_ICONERROR);
+        return;
+    }
+    CheckMenuItem(hMenu, IDM_DEBUG_SHOW_MINES, MF_BYCOMMAND | MF_UNCHECKED);
+    InitGame();
+    MainWindow_InitalizeGrid(hwnd);
+    RECT rcClient;
+    GetClientRect(hwnd, &rcClient);
+    int window_width = rcClient.right - rcClient.left;
+    int window_height = rcClient.bottom - rcClient.top;
+    LPARAM lParam = MAKELPARAM(window_width, window_height);
+    SendMessage(hwnd, WM_SIZE, 0, lParam);
+}
+
 void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
     switch(id)
     {
-        case IDM_FILE_EXIT:
+        case IDM_GAME_NEW:
+        {
+            MainWindow_OnCommand_New(hwnd);
+        } break;
+        case IDM_GAME_EXIT:
         {
             MainWindow_OnCommand_Exit(hwnd);
         } break;

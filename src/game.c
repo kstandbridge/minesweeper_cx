@@ -21,12 +21,8 @@ void InitMines(int x, int y)
     }
 }
 
-void InitGame(int cols, int rows, int mines)
+void InitGame()
 {
-    g_gridColumns = cols;
-    g_gridRows = rows;
-    g_numMines = mines;
-    
     CleanUp();
     
     g_tiles = GlobalAlloc(GPTR, sizeof(int) * g_gridRows * g_gridColumns);

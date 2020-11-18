@@ -12,7 +12,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [x] feat: size/position buttons on window resize
 - [x] feat: debug menu to show location of placed mines
 - [x] feat: add game over when mine clicked
-- [ ] feat: add new game button
+- [x] feat: add new game button
 - [ ] feat: show count of surrounding mines on click
 - [ ] feat: auto click surrounding tile if no mines
 - [ ] feat: add game win when all mines found
