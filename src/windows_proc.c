@@ -134,6 +134,29 @@ void MainWindow_OnCommand_CheckMine(HWND hwnd, HWND hwndCtl, int id)
     else if(tileState == CLEAR)
     {
         Button_Enable(hwndCtl, FALSE);
+        for(int i = -1; i < 2; i++)
+        {
+            for(int j = -1; j < 2; j++)
+            {
+                if(x + i >= 0 && x + i < g_gridColumns && y + j >= 0 && y + j < g_gridRows)
+                {
+                    if(GetTileState(x + i, j + y) == MINE)
+                    {
+                        continue;
+                    }
+                    int button_id = ID_BUTTON + ((y + j) * g_gridColumns + (x + i));
+                    HWND button_hwnd = GetDlgItem(hwnd, button_id);
+                    if(button_hwnd == NULL)
+                    {
+                        MessageBox(hwnd, L"Unable to get button handle", L"Error", MB_OK);
+                    }
+                    if(IsWindowEnabled(button_hwnd))
+                    {
+                        MainWindow_OnCommand_CheckMine(hwnd, button_hwnd, button_id);
+                    }
+                }
+            }
+        }
     }
     else
     {
