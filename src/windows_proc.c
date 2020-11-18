@@ -94,10 +94,9 @@ void MainWindow_OnCommand_ShowMines(HWND hwnd)
     }
 }
 
-void MainWindow_OnCommand_CheckMine(HWND hwnd, int id)
+void MainWindow_OnCommand_CheckMine(HWND hwnd, HWND hwndCtl, int id)
 {
-    HWND button_hwnd = GetDlgItem(hwnd, id);
-    if(button_hwnd == NULL)
+    if(hwndCtl == NULL)
     {
         MessageBox(hwnd, L"Unable to get button handle", L"Error", MB_OK | MB_ICONERROR);
         return;
@@ -183,7 +182,7 @@ void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         } break;
         default:
         {
-            MainWindow_OnCommand_CheckMine(hwnd, id);
+            MainWindow_OnCommand_CheckMine(hwnd, hwndCtl, id);
         } break;
     }
 }

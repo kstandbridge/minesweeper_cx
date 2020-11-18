@@ -27,4 +27,5 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [x] fix: status bar position on resize
 
 ## Tech Debt
+- [x] tech: CheckMine to take handle to ctrl
 - [ ] tech: error handling
