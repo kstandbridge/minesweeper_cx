@@ -15,8 +15,9 @@ typedef enum
     NINE = 9,
     
     MINE = 10,
-    FLAGGED_CORRECT = 11,
-    FLAGGED_INCORRECT = 12
+    EXPLODE = 11,
+    FLAGGED_CORRECT = 12,
+    FLAGGED_INCORRECT = 13
 } TILE_STATE;
 
 static int g_gridColumns = 10;
@@ -26,5 +27,6 @@ static int g_numMines = 10;
 void InitGame(int cols, int rows, int mines);
 void CleanUp();
 
+TILE_STATE CheckTileState(int x, int y);
 TILE_STATE GetTileState(int x, int y);
 

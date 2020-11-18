@@ -2,6 +2,7 @@
 
 #include <windowsx.h>
 #include <CommCtrl.h>
+#include <time.h>
 
 #include "resource.h"
 #include "game.h"
@@ -50,6 +51,10 @@ void MainWindow_ToggleShowMines(HWND hwnd, BOOL show_mines)
                     Button_SetText(button_hwnd, L"");
                 }
             } break;
+            case EXPLODE:
+            {
+                Button_SetText(button_hwnd, L"E");
+            } break;
             default:
             {
                 Button_SetText(button_hwnd, L"");
@@ -89,6 +94,33 @@ void MainWindow_OnCommand_ShowMines(HWND hwnd)
     }
 }
 
+void MainWindow_OnCommand_CheckMine(HWND hwnd, int id)
+{
+    HWND button_hwnd = GetDlgItem(hwnd, id);
+    if(button_hwnd == NULL)
+    {
+        MessageBox(hwnd, L"Unable to get button handle", L"Error", MB_OK | MB_ICONERROR);
+        return;
+    }
+    int x = (id - ID_BUTTON) % g_gridColumns;
+    int y = (id - ID_BUTTON) / g_gridColumns;
+    TILE_STATE tileState = CheckTileState(x, y);
+    if(tileState == EXPLODE)
+    {
+        MainWindow_ToggleShowMines(hwnd, TRUE);
+        for(int x = 0; x < g_gridColumns; x++)
+            for(int y = 0; y < g_gridRows; y++)
+        {
+            int button_id = ID_BUTTON + (y * g_gridColumns + x);
+            
+            HWND hButton = GetDlgItem(hwnd, button_id);
+            
+            Button_Enable(hButton, FALSE);
+        }
+        MessageBox(hwnd, L"Game Over!!!", L"BOOM!!!", MB_OK | MB_ICONWARNING);
+    }
+}
+
 void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
     switch(id)
@@ -100,6 +132,10 @@ void MainWindow_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         case IDM_DEBUG_SHOW_MINES:
         {
             MainWindow_OnCommand_ShowMines(hwnd);
+        } break;
+        default:
+        {
+            MainWindow_OnCommand_CheckMine(hwnd, id);
         } break;
     }
 }
@@ -146,6 +182,8 @@ BOOL MainWindow_InitalizeGrid(HWND hwnd)
 
 BOOL MainWindow_OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
 {
+    srand((unsigned int)time(NULL));
+    
     HWND hStatus = CreateWindowEx(0, STATUSCLASSNAME, L"",
                                   SBARS_SIZEGRIP | WS_CHILD | WS_VISIBLE,
                                   0, 0, 0, 0,

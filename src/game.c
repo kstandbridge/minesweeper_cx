@@ -42,6 +42,23 @@ void CleanUp()
     }
 }
 
+TILE_STATE CheckTileState(int x, int y)
+{
+    if(!g_tiles)
+    {
+        MessageBox(NULL, L"Board not initalized!", L"Error", MB_OK | MB_ICONERROR);
+        return UNCHECKED;
+    }
+    
+    TILE_STATE result = g_tiles[y * g_gridColumns + x];
+    if(result == MINE)
+    {
+        g_tiles[y * g_gridColumns + x] = EXPLODE;
+        return EXPLODE;
+    }
+    return CLEAR;
+}
+
 TILE_STATE GetTileState(int x, int y)
 {
     if(!g_tiles)

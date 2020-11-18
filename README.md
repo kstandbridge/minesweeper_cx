@@ -11,8 +11,8 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [x] feat: draw a grid of button
 - [x] feat: size/position buttons on window resize
 - [x] feat: debug menu to show location of placed mines
-- [ ] feat: add game over when mine clicked
-- [ ] feat: show remaining mines on game over
+- [x] feat: add game over when mine clicked
+- [ ] feat: add new game button
 - [ ] feat: show count of surrounding mines on click
 - [ ] feat: auto click surrounding tile if no mines
 - [ ] feat: add game win when all mines found
@@ -20,6 +20,7 @@ The goal of this project is to learn to use the windowsx header file, which shou
 - [ ] feat: allow right click to flag tile as mine
 - [ ] feat: indicate success/fail on flagged tiles
 - [ ] feat: indicate bomb explosion on hit
+- [ ] feat: add settings to game difficulty
 - [ ] feat: add icons on tiles for different states
 
 ## Bugs
